@@ -71,6 +71,7 @@ export const Login = () => {
                     variant="link"
                     className="password-toggle"
                     onClick={togglePasswordVisibility}
+                    
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </Button>

@@ -1,10 +1,15 @@
 import express from 'express'
 import cors from 'cors'
 import mysql from 'mysql'
+import multer from 'multer';
 
 import { getEstados } from './JavaScript/Users/getEstados.js';
 import { getMunicipios } from './JavaScript/Users/getMunicipios.js';
 import { getColonias } from './JavaScript/Users/getColonias.js';
+import { registerUser } from './JavaScript/Users/registerUser.js';
+import { loginUser } from './JavaScript/Access/loginLogic.js';
+
+
 
 const app = express();
 app.use(cors());
@@ -14,7 +19,7 @@ const dbMedirec = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "database2medirec"
+    database: "medirecactreact"
 });
 
 const dbSepomex = mysql.createConnection({
@@ -27,6 +32,14 @@ const dbSepomex = mysql.createConnection({
 getEstados(app,dbSepomex);
 getMunicipios(app,dbSepomex);
 getColonias(app,dbSepomex);
+registerUser(app,dbMedirec);
+loginUser(app,dbMedirec);
+
+
+
+
+
+
 
 
 app.listen(3001, ()=>{

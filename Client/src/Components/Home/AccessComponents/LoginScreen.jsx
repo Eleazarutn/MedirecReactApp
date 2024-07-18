@@ -1,40 +1,58 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Modal } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { NavBar } from "../NavBar";
+import Axios from "axios";
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [correo, setCorreo] = useState("");
+  const [password, setPassword] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     const form = event.currentTarget;
+    event.preventDefault();
+    event.stopPropagation();
+
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+      setValidated(true);
+      return;
     }
-    setValidated(true);
-    // Add your login logic here
-    console.log("Form submitted!");
+
+    try {
+      const response = await Axios.post("http://localhost:3001/LoginUser", {
+        email: correo,
+        password: password,
+      });
+
+      if (response.status === 200) {
+        setShowAuthModal(true);
+      } else {
+        setShowErrorModal(true);
+        setLoginError("Correo electrónico o contraseña incorrectos");
+      }
+    } catch (error) {
+      console.error("Error al autenticar usuario:", error);
+      setShowErrorModal(true);
+      setLoginError("Hubo un problema al intentar iniciar sesión");
+    }
   };
 
   return (
     <>
-      <NavBar />
-
       <Container
         fluid
         className="vh-100 d-flex align-items-center justify-content-center"
       >
         <Row className="w-75">
-          <Col
-            md={6}
-            className="d-flex justify-content-center align-items-center"
-          >
+          <Col md={6} className="d-flex justify-content-center">
             <img
               src="https://via.placeholder.com/400"
               alt="Placeholder"
@@ -51,6 +69,8 @@ export const Login = () => {
                 <Form.Control
                   type="email"
                   placeholder="Ingresa tu correo o usuario"
+                  value={correo}
+                  onChange={(e) => setCorreo(e.target.value)}
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -65,13 +85,14 @@ export const Login = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="Contraseña"
                     minLength={6}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                   <Button
                     variant="link"
                     className="password-toggle"
                     onClick={togglePasswordVisibility}
-                    
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </Button>
@@ -115,8 +136,32 @@ export const Login = () => {
           </Col>
         </Row>
       </Container>
+
+      {/* Modal de error */}
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Error de Autenticación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{loginError}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal de autenticación exitosa */}
+      <Modal show={showAuthModal} onHide={() => setShowAuthModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Inicio de sesión exitoso</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Bienvenido!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => setShowAuthModal(false)} href="/homePaciente">
+            Continuar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
-
-

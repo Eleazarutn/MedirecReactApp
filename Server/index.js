@@ -38,7 +38,7 @@ const createDbConnection = (config) => {
             throw err;
         }
     });
-a
+
     return connection;
 };
 

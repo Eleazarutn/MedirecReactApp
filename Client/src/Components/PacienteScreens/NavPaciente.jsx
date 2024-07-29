@@ -43,7 +43,7 @@ export const NavPaciente = () => {
             <Nav.Link href="#home">Agendar una cita</Nav.Link>
             <Nav.Link href="#profile">Historial de citas</Nav.Link>
             <Nav.Link href="#action/3.1">Historial de recetas</Nav.Link>
-            <Nav.Link href="/pharmacyPaciente">Farmacia</Nav.Link>
+            <Nav.Link href="/farmaciaPaciente">Farmacia</Nav.Link>
           </Nav>
         </Offcanvas.Body>
       </Offcanvas>

@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import TyCMedirec from "../../assets/PacienteImages/TyCMedirec.pdf"
 
 import Logo from "../../assets/HomeImages/logo.jpg";
 import CofeprisImage from "../../assets/HomeImages/CofeprisImage.jpg";
@@ -31,8 +32,8 @@ export const Footer = () => {
               <FacebookIcon style={{ fontSize: 30, margin: "0 5px" }} />
               <TwitterIcon style={{ fontSize: 30, margin: "0 5px" }} />
               <div style={{ marginLeft: "10px" }}>
-                <strong>Legal</strong>, <a href="#">Términos y condiciones</a>,{" "}
-                <a href="#">Aviso de privacidad</a>
+                <strong>Legal</strong>, <a href={TyCMedirec} download={TyCMedirec}>Términos y condiciones</a>,{" "}
+                <a href={TyCMedirec} download={TyCMedirec}>Aviso de privacidad</a>
               </div>
             </Col>
           </Row>

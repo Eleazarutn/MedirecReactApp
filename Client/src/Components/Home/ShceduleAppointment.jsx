@@ -30,7 +30,7 @@ export const ScheduleAppointmentCard = () => {
         </Row>
         <Row>
           <Col>
-            <Button variant="primary" className="mt-2">
+            <Button variant="primary" className="mt-2" href= "/register">
               Agenda tu primera consulta
             </Button>
           </Col>

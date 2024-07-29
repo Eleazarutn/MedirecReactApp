@@ -83,7 +83,7 @@ export const PromoSolutionsCard = () => {
               className="img-fluid mb-2"
               style={{ maxHeight: "500px", width: "100%" }}
             />
-            <Button variant="primary" className="mt-2">
+            <Button variant="primary" className="mt-2" href="/register">
               Agenda tu primera consulta
             </Button>
           </Col>

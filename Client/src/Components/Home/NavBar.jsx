@@ -10,7 +10,7 @@ const IndexButtons = () => {
     Location.pathname == "/" && (
       <>
         <Button variant="outline-primary" className="me-2" href="/login">
-          Login
+          Iniciar sesión
         </Button>
         <Button variant="primary" href="/register" >Registro</Button>
       </>
@@ -24,8 +24,8 @@ const ForgotButtons = () => {
   return (
     Location.pathname == "/forgotPassword" && (
       <>
-        <Button variant="outline-primary" className="me-2" href="/login">
-          Login
+        <Button variant="outline-primary" className="me-2" href="/Iniciar sesión">
+          Iniciar sesión
         </Button>
         <Button variant="primary" href="/register" >Registro</Button>
       </>

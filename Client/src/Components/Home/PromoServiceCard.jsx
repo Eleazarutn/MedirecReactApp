@@ -11,7 +11,7 @@ export const PromoCard = () => {
         <Row className="g-0">
           <Col md={8} className="d-flex flex-column justify-content-center">
             <Card.Body>
-              <Button bg="secondary" className="mb-2">
+              <Button bg="secondary" className="mb-2" href="/register">
                 <Image
                   src={GiftIcon}
                   height={"30px"}
@@ -22,7 +22,7 @@ export const PromoCard = () => {
               <Card.Title className="display-5">
                 Atención médica en línea por solo $99 MXN
               </Card.Title>
-              <Button variant="primary" className="mt-3">
+              <Button variant="primary" className="mt-3" href = "/register">
                 Comenzar consulta
               </Button>
               <div className="mt-3 d-flex align-items-center">

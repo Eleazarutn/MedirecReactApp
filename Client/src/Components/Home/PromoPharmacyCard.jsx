@@ -57,7 +57,7 @@ export const PromoPharmacyCard = () => {
               className="img-fluid"
             />
           </div>
-          <Button variant="primary" className="mt-2">
+          <Button variant="primary" className="mt-2" href="/register">
             Descubre lo que tenemos para ti
           </Button>
         </Col>

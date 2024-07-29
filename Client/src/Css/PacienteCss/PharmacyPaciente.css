@@ -1,0 +1,29 @@
+/* PharmacyPaciente.css */
+.card-equal-height {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .card-equal-height .card-body {
+    flex: 1;
+  }
+  
+  .card-img {
+    width: 100%;
+    height: 150px; /* Asegura que la altura sea de 150px */
+    object-fit: cover; /* Mantiene la relación de aspecto */
+  }
+  
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Espaciado entre los botones */
+    margin-top: 10px;
+  }
+  
+  .button-group .btn {
+    flex: 1;
+    min-width: 150px; /* Asegura un ancho mínimo para los botones */
+  }
+  

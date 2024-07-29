@@ -12,7 +12,7 @@ export const RoutesPaciente = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/homePaciente" element={<FullPaciente/>} />
-          <Route path="/pahrmacyPaciente" element={<PharmacyPaciente/>} />
+          <Route path="/farmaciaPaciente" element={<PharmacyPaciente/>} />
         </Routes>
       </BrowserRouter>
     </>

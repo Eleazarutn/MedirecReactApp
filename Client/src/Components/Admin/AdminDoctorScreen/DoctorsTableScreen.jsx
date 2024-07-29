@@ -47,6 +47,8 @@ export const DoctorsTableScreen = () => {
             {doctors.map(doctor =>(
               <tr key={doctor.id_doctor}>
                 <td>{doctor.doc_nombre}</td>
+                <td>{doctor.doc_nombre}</td>
+                
               </tr>
             ))}
           </tbody>

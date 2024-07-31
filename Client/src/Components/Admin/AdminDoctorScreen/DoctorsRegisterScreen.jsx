@@ -1,17 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { FaGoogle, FaFacebook, FaEye, FaEyeSlash } from "react-icons/fa";
-import { NavBar } from "../NavBar";
+import NavAdmin from "../NavAdmin";
 import axios from "axios";
-
-export const RegisterScreen = () => {
+export const DoctorsRegisterScreen = () => {
   const formRef = useRef(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [validated, setValidated] = useState(false);
-
   const [states, setStates] = useState([]);
   const [municipalities, setMunicipalities] = useState([]);
   const [colonies, setColonies] = useState([]);
@@ -49,19 +42,6 @@ export const RegisterScreen = () => {
       .catch((error) => console.error("Error al cargar las colonias:", error));
   };
 
-  const togglePasswordVisibility = (field) => {
-    if (field === "password") {
-      setShowPassword(!showPassword);
-    } else if (field === "confirmPassword") {
-      setShowConfirmPassword(!showConfirmPassword);
-    }
-  };
-
-  const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])/;
-    return passwordRegex.test(password);
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault(); // Evita el envío automático del formulario
     const form = formRef.current;
@@ -73,47 +53,47 @@ export const RegisterScreen = () => {
       return;
     }
 
-    // Recolecta los datos del formulario
+    //Recolección de los datos del formulario
+
     const formData = new FormData(form);
-    const userData = {
+    const doctorData = {
       Nombre: formData.get("formFirstName"),
       Apellido: formData.get("formLastName"),
-      Edad: formData.get("formEdad"),
+      Especialidad: formData.get("formEspecialidad"),
+      FechaNacimiento: formData.get("formFechaNacimiento"),
       Telefono: formData.get("formTelefono"),
+      Email: formData.get("formEmail"),
       Estado: selectedState,
-      Municipio: selectedMunicipality,
+      Muncipio: formData.get("formMunicipio"),
       Colonia: selectedColonia,
-      Alergias: formData.get("formAlergias"),
-      Correo: formData.get("formEmail"),
-      Contraseña: formData.get("formPassword"),
+      Licencia: formData.get("formLicencia"),
+      Experiencia: formData.get("formExperiencia"),
+      HospitalProcedencia: formData.get("formHospitalProcedencia"),
+      Tarifa: formData.get("formTarifa"),
+      Educación: formData.get("formEducacion"),
     };
+    
 
     axios
-      .post("http://localhost:3001/RegisterUser", userData)
+      .post("http://localhost:3001/RegisterDoctor", doctorData)
       .then(() => {
         alert("Usuario registrado con éxito");
-        form.reset(); // Opcional: limpia el formulario después del registro
+        form.reset(); // Limpia el formulario despues del registro
       })
-      .catch((error) => {
-        console.error("Hubo un error al registrar el usuario", error);
-      });
+      .catch((error) => console.error("Hubo un error al registrar el doctor"));
   };
-
   return (
     <>
-      <NavBar />
+      <NavAdmin />
 
       <Container
         className="d-flex justify-content-center align-items-center"
         style={{ minHeight: "100vh" }}
       >
         <Row className="justify-content-md-center mt-5">
-          <h2 className="text-center mb-4">
-            Estás a un paso de transformar tu salud
-          </h2>
+          <h2 className="text-center mb-4">Registra a un Médico</h2>
 
           <Col md="8">
-            <h3 className="mb-4">Crea una cuenta</h3>
             <Form
               ref={formRef}
               noValidate
@@ -128,11 +108,11 @@ export const RegisterScreen = () => {
                   placeholder="Nombre"
                   name="formFirstName"
                   required
-                  minLength="2"
+                  minLength="1"
                   maxLength="50"
                 />
                 <Form.Control.Feedback type="invalid">
-                  Ingresa tu nombre (mín. 2 caracteres).
+                  Ingresa tu nombre (mín. 1 caracter).
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -143,40 +123,66 @@ export const RegisterScreen = () => {
                   placeholder="Apellido"
                   name="formLastName"
                   required
-                  minLength="2"
+                  minLength="1"
                   maxLength="50"
                 />
                 <Form.Control.Feedback type="invalid">
-                  Ingresa tu apellido (mín. 2 caracteres).
+                  Ingresa tu apellido (mín. 1 caracter).
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="formEdad" className="mb-3">
-                <Form.Label>Edad</Form.Label>
+              <Form.Group controlId="formEspecialidad" className="mb-3">
+                <Form.Label>Especialidad</Form.Label>
                 <Form.Control
-                  type="number"
-                  placeholder="Edad"
-                  name="formEdad"
+                  type="text"
+                  placeholder="Especialidad"
+                  name="formEspecialidad"
                   required
                   min="1"
-                  max="120"
+                  max="60"
                 />
                 <Form.Control.Feedback type="invalid">
-                  Ingresa tu edad.
+                  Ingresa la especialidad del médico
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="formFechaNacimiento" className="mb-3">
+                <Form.Label>Fecha de nacimeinto</Form.Label>
+                <Form.Control
+                  type="date"
+                  placeholder="Fecha de nacimiento"
+                  name="formFechaNacimiento"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Ingresa la fecha de nacimeinto
                 </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="formTelefono" className="mb-3">
-                <Form.Label>Teléfono</Form.Label>
+                <Form.Label>Telefono</Form.Label>
                 <Form.Control
                   type="tel"
-                  placeholder="Teléfono"
-                  name="formTelefono"
+                  placeholder="Telefono"
                   required
+                  name="formTelefono"
                   pattern="[0-9]{10}"
                 />
                 <Form.Control.Feedback type="invalid">
-                  Ingresa un número de teléfono válido (10 dígitos).
+                  Ingresa el telefono del médico
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="formEmail" className="mb-3">
+                <Form.Label>Correo electrónico</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Correo electrónico"
+                  required
+                  name="formEmail"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Ingresa un correo electrónico válido.
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -198,7 +204,7 @@ export const RegisterScreen = () => {
                     ))}
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
-                  Selecciona tu estado.
+                  Selecciona un estado
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -220,7 +226,7 @@ export const RegisterScreen = () => {
                     ))}
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
-                  Selecciona tu municipio.
+                  Selecciona un municipio
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -242,82 +248,72 @@ export const RegisterScreen = () => {
                     ))}
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
-                  Selecciona tu colonia.
+                  Selecciona una colonia
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="formAlergias" className="mb-3">
-                <Form.Label>Alergias</Form.Label>
+              <Form.Group controlId="formLicencia" className="mb-3">
+                <Form.Label>No.Licencia</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="No.Licencia"
+                  required
+                  name="formLicencia"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Ingresa el numero de licencia
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="formExperiencia" className="mb-3">
+                <Form.Label>Años de experiencia</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Años de experiencia"
+                  required
+                  name="formExperiencia"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Ingresa los años de experiencia
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="formHospitalProcedencia" className="mb-3">
+                <Form.Label>Hospital de procedencia</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Alergias"
+                  placeholder="Hospital de procedencia"
                   required
-                  name="formAlergias"
+                  name="formHospitalProcedencia"
                 />
                 <Form.Control.Feedback type="invalid">
-                  Ingresa tus alergias.
+                  Ingresa el hospital de procedencia
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="formEmail" className="mb-3">
-                <Form.Label>Correo electrónico</Form.Label>
+              <Form.Group controlId="formTarifa" className="mb-3">
+                <Form.Label>Precio por consulta</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="Correo electrónico"
+                  type="number"
+                  placeholder="Precio por consulta"
                   required
-                  name="formEmail"
+                  name="formTarifa"
                 />
                 <Form.Control.Feedback type="invalid">
-                  Ingresa un correo electrónico válido.
+                  Ingresa el precio por consulta
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="formPassword" className="mb-3">
-                <Form.Label>Contraseña</Form.Label>
-                <div className="d-flex align-items-center">
-                  <Form.Control
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Contraseña"
-                    name="formPassword"
-                    required
-                    minLength="6"
-                    isInvalid={!!passwordError}
-                  />
-                  <Button
-                    variant="link"
-                    className="btn-icon"
-                    onClick={() => togglePasswordVisibility("password")}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </Button>
-                </div>
+              <Form.Group controlId="formEducacion" className="mb-3">
+                <Form.Label>Universidad de egreso</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Universidad de egreso"
+                  required
+                  name="formEducacion"
+                />
                 <Form.Control.Feedback type="invalid">
-                  {passwordError ||
-                    "La contraseña debe tener al menos 6 caracteres."}
-                </Form.Control.Feedback>
-              </Form.Group>
-
-              <Form.Group controlId="formConfirmPassword" className="mb-3">
-                <Form.Label>Confirmar Contraseña</Form.Label>
-                <div className="d-flex align-items-center">
-                  <Form.Control
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirmar Contraseña"
-                    name="formConfirmPassword"
-                    required
-                    minLength="6"
-                    isInvalid={!!confirmPasswordError}
-                  />
-                  <Button
-                    variant="link"
-                    className="btn-icon"
-                    onClick={() => togglePasswordVisibility("confirmPassword")}
-                  >
-                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                  </Button>
-                </div>
-                <Form.Control.Feedback type="invalid">
-                  {confirmPasswordError || "Las contraseñas no coinciden."}
+                  Ingresa la universidad de egreso
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -336,27 +332,7 @@ export const RegisterScreen = () => {
               <Button variant="primary" type="submit" className="w-100 mb-3">
                 Crear una cuenta
               </Button>
-
-              <Button
-                variant="outline-dark"
-                className="w-100 mb-3 d-flex align-items-center justify-content-center"
-              >
-                <FaGoogle className="me-2" />
-                <span>Crea una cuenta con Google</span>
-              </Button>
-
-              <Button
-                variant="primary"
-                className="w-100 d-flex align-items-center justify-content-center"
-              >
-                <FaFacebook className="me-2" />
-                <span>Crea una cuenta con Facebook</span>
-              </Button>
             </Form>
-
-            <p className="mt-3 text-center">
-              ¿Ya tienes una cuenta? <a href="/login">Inicia sesión aquí</a>
-            </p>
           </Col>
         </Row>
       </Container>

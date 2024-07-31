@@ -21,7 +21,7 @@ export const registerUser = (app, db) => {
       INSERT_USER_QUERY,
       [
         formFirstName,
-        formLastName, // Asegúrate de que este campo esté correctamente definido en tu formulario
+        formLastName, 
         formEdad,
         formTelefono,
         formEstado,

@@ -40,7 +40,7 @@ export const NavAdmin = () => {
           <Nav className="flex-column">
             <NavDropdown title="Doctores" id="offcanvasNavbarDropdownDoctors">
               <NavDropdown.Item href="/doctorsTableAdmin">Tabla doctores</NavDropdown.Item>
-              <NavDropdown.Item href="#add-doctor">Informe Doctores</NavDropdown.Item>
+              <NavDropdown.Item href="/registerDoctorAdmin">Registro de un médico</NavDropdown.Item>
             </NavDropdown>
 
             <NavDropdown title="Usuarios / Pacientes" id="offcanvasNavbarDropdownUsers">
@@ -50,10 +50,9 @@ export const NavAdmin = () => {
             </NavDropdown>
 
             <NavDropdown title="Productos" id="offcanvasNavbarDropdownProducts">
-              <NavDropdown.Item href="#view-products">Ver Productos</NavDropdown.Item>
-              <NavDropdown.Item href="#add-product">Inventario</NavDropdown.Item>
-              <NavDropdown.Item href="#edit-product">Informe productos stock</NavDropdown.Item>
-              <NavDropdown.Item href="#edit-product">Informe productos ventas</NavDropdown.Item>
+              <NavDropdown.Item href="/productsTableAdmin">Tabla de Productos</NavDropdown.Item>
+              <NavDropdown.Item href="/productRegisterAdmin">Registar producto</NavDropdown.Item>
+              
             </NavDropdown>
 
 

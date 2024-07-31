@@ -13,61 +13,61 @@ import {
 } from "react-bootstrap";
 import { FaEdit, FaTrashAlt, FaFilePdf } from "react-icons/fa";
 
-export const DoctorsTableScreen = () => {
-  const [doctors, setDoctors] = useState([]);
+export const ProductsTableScreen = () => {
+  const [products, setProducts] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectDoctor, setSelectedDoctor] = useState(null);
+  const [selectProduct, setSelectProduct] = useState(null);
 
-  const fetchDoctors = async () => {
+  const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3001/getDoctors");
+      const response = await fetch("http://localhost:3001/getProducts");
       if (response.ok) {
         const data = await response.json();
-        setDoctors(data.doctors);
+        setProducts(data.products);
       } else {
-        console.error("Error fetching Doctors:", response.statusText);
+        console.error("Error fetching products", error);
       }
     } catch (error) {
-      console.error("Error fetching doctors", error);
+      console.error("Error fetching products", error);
     }
   };
 
-  const handleEdit = (doctor) => {
-    setSelectedDoctor(doctor);
+  const handleEdit = (product) => {
+    setSelectProduct(product);
     setShowEditModal(true);
   };
 
-  const handleDelete = (doctor) =>{
-    setSelectedDoctor(doctor);
+  const handleDelete = (product) => {
+    setSelectProduct(product);
     setShowDeleteModal(true);
-  }
+  };
 
   const handleSave = async () => {
-    if (!selectDoctor || !selectDoctor.id_doctor) {
-      console.error("No doctor selected.");
+    if (!selectProduct || !selectProduct.id_producto) {
+      console.error("No product selected.");
       return;
     }
 
     try {
       const response = await fetch(
-        `http://localhost:3001/uptadeDoctor/${selectDoctor.id_doctor}`,
+        `http://localhost:3001/updateProduct/${selectProduct.id_producto}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(selectDoctor),
+          body: JSON.stringify(selectProduct),
         }
       );
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Doctor updated", data);
-        setShowDeleteModal(false);
-        fetchDoctors(); //Llama a fectchDoctors para refrescar la información
+        console.log("Product updated", data);
+        setShowEditModal(false);
+        fetchProducts(); //Llama a fectchDoctors para refrescar la información
       } else {
-        console.error("Error updating doctor:", response.statusText);
+        console.error("Error updating Product:", response.statusText);
       }
     } catch (error) {
       console.error("Error", error.message);
@@ -75,27 +75,27 @@ export const DoctorsTableScreen = () => {
   };
 
   const handleConfirmDelete = async () => {
-    if (!selectDoctor || !selectDoctor.id_doctor) {
-      console.error("No doctor selected or user ID is missing.");
+    if (!selectProduct || !selectProduct.id_producto) {
+      console.error("No product selected or user ID is missing.");
       setShowDeleteModal(false);
       return;
     }
 
     try {
       const response = await fetch(
-        `http://localhost:3001/deleteDoctor/${selectDoctor.id_doctor}`,
+        `http://localhost:3001/deleteProduct/${selectProduct.id_producto}`,
         {
           method: "DELETE",
         }
       );
 
-      if(response.ok){
+      if (response.ok) {
         const data = await response.json();
-        console.log("User deleted", data);
+        console.log("Product deleted", data);
         setShowDeleteModal(false);
-        fetchDoctors(); //Llama a fetchDoctor para referescar todos los datos de los doctores
-      }else{
-        console.error("Error deleting doctor:", response.statusText);
+        fetchProducts(); //Llama a fetchDoctor para referescar todos los datos de los doctores
+      } else {
+        console.error("Error deleting product:", response.statusText);
       }
     } catch (error) {
       console.error("Error:", error.message);
@@ -103,58 +103,34 @@ export const DoctorsTableScreen = () => {
   };
 
   useEffect(() => {
-    fetchDoctors();
+    fetchProducts();
   }, []);
 
-  const generatePDF = async (doctor) => {
+  const generatePDF = async (product) => {
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([600, 400]);
 
-    page.drawText(`Nombre: ${doctor.doc_nombre}`, {
+    page.drawText(`Nombre: ${product.pro_nombre}`, {
       x: 50,
       y: 350,
       size: 20,
       color: rgb(0, 0, 0),
     });
-    page.drawText(`Apellidos: ${doctor.doc_apellidos}`, {
+    page.drawText(`Descripción: ${product.pro_descripcion}`, {
       x: 50,
       y: 320,
       size: 20,
       color: rgb(0, 0, 0),
     });
-    page.drawText(`Telefono: ${doctor.doc_telefono}`, {
+    page.drawText(`Precio: ${product.pro_precio}`, {
       x: 50,
       y: 290,
       size: 20,
       color: rgb(0, 0, 0),
     });
-    page.drawText(`Fecha de nacimiento: ${doctor.doc_fecha_nacimiento}`, {
+    page.drawText(`Stock ${product.pro_stock}`, {
       x: 50,
       y: 260,
-      size: 20,
-      color: rgb(0, 0, 0),
-    });
-    page.drawText(`Especialidad: ${doctor.doc_especialidad}`, {
-      x: 50,
-      y: 230,
-      size: 20,
-      color: rgb(0, 0, 0),
-    });
-    page.drawText(`No.Licencia: ${doctor.doc_numero_licencia}`, {
-      x: 50,
-      y: 200,
-      size: 20,
-      color: rgb(0, 0, 0),
-    });
-    page.drawText(`Hospital de procedencia: ${doctor.doc_afiliacion_hospitalaria}`, {
-      x: 50,
-      y: 170,
-      size: 20,
-      color: rgb(0, 0, 0),
-    });
-    page.drawText(`Universdidad de procedencia: ${doctor.doc_educacion}`, {
-      x: 50,
-      y: 140,
       size: 20,
       color: rgb(0, 0, 0),
     });
@@ -173,21 +149,13 @@ export const DoctorsTableScreen = () => {
     const rowHeight = 20;
     const columnWidth = 150; // Ajusta el ancho de columna según sea necesario
     const margin = 40;
-
+  
     // Carga la fuente estándar
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
-    // Draw table headers with bold font
-    const headers = [
-      "Nombre",
-      "Apellidos",
-      "Fecha de nacimiento",
-      "Especialidad",
-      "No.Licencia",
-      "Hospital de procedencia",
-      "Escuela de procedencia"
-    ];
+  
+    // Dibujar encabezados de la tabla con fuente en negrita
+    const headers = ["Nombre", "Descripción", "Precio", "Stock"];
     headers.forEach((header, index) => {
       page.drawText(header, {
         x: margin + index * columnWidth,
@@ -197,10 +165,10 @@ export const DoctorsTableScreen = () => {
         font: boldFont,
       });
     });
-
-    // Draw table borders
+  
+    // Dibujar bordes de la tabla
     const tableWidth = columnWidth * headers.length;
-    const tableHeight = yPosition - rowHeight; // Distance from top of the page to the end of the table
+    const tableHeight = yPosition - rowHeight; // Distancia desde la parte superior de la página hasta el final de la tabla
     page.drawRectangle({
       x: margin - 5,
       y: yPosition - rowHeight,
@@ -209,15 +177,15 @@ export const DoctorsTableScreen = () => {
       borderColor: rgb(0, 0, 0),
       borderWidth: 1,
     });
-
+  
     yPosition -= rowHeight;
-
-    doctors.forEach((doctor) => {
+  
+    products.forEach((product) => {
       if (yPosition < margin) {
         page.addPage([1000, 700]); // Nueva página con orientación horizontal
         yPosition = tableTop - rowHeight;
-
-        // Draw table headers on the new page
+  
+        // Dibujar encabezados de la tabla en la nueva página
         headers.forEach((header, index) => {
           page.drawText(header, {
             x: margin + index * columnWidth,
@@ -227,10 +195,10 @@ export const DoctorsTableScreen = () => {
             font: boldFont,
           });
         });
-
+  
         yPosition -= rowHeight;
-
-        // Draw table borders
+  
+        // Dibujar bordes de la tabla
         page.drawRectangle({
           x: margin - 5,
           y: yPosition - rowHeight,
@@ -240,51 +208,37 @@ export const DoctorsTableScreen = () => {
           borderWidth: 1,
         });
       }
-
-      page.drawText(doctor.doc_nombre, {
+  
+      page.drawText(product.pro_nombre, {
         x: margin,
         y: yPosition,
         size: 8,
         color: rgb(0, 0, 0),
         font,
       });
-      page.drawText(doctor.doc_apellidos, {
+      page.drawText(product.pro_descripcion, {
         x: margin + columnWidth,
         y: yPosition,
         size: 8,
         color: rgb(0, 0, 0),
         font,
       });
-      page.drawText(doctor.doc_telefono, {
+      page.drawText(product.pro_precio.toString(), {
         x: margin + 2 * columnWidth,
         y: yPosition,
         size: 8,
         color: rgb(0, 0, 0),
         font,
       });
-      page.drawText(doctor.doc_fecha_nacimiento, {
+      page.drawText(product.pro_stock.toString(), {
         x: margin + 3 * columnWidth,
         y: yPosition,
         size: 8,
         color: rgb(0, 0, 0),
         font,
       });
-      page.drawText(doctor.doc_especialidad, {
-        x: margin + 4 * columnWidth,
-        y: yPosition,
-        size: 8,
-        color: rgb(0, 0, 0),
-        font,
-      });
-      page.drawText(doctor.doc_numero_licencia, {
-        x: margin + 5 * columnWidth,
-        y: yPosition,
-        size: 8,
-        color: rgb(0, 0, 0),
-        font,
-      });
-
-      // Draw table row lines
+  
+      // Dibujar líneas de fila de la tabla
       page.drawRectangle({
         x: margin - 5,
         y: yPosition - rowHeight,
@@ -293,11 +247,11 @@ export const DoctorsTableScreen = () => {
         borderColor: rgb(0, 0, 0),
         borderWidth: 1,
       });
-
+  
       yPosition -= rowHeight;
     });
-
-    // Draw the bottom border of the last row
+  
+    // Dibujar el borde inferior de la última fila
     page.drawRectangle({
       x: margin - 5,
       y: yPosition - rowHeight,
@@ -306,51 +260,49 @@ export const DoctorsTableScreen = () => {
       borderColor: rgb(0, 0, 0),
       borderWidth: 1,
     });
-
+  
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
     window.open(url, "_blank");
   };
+  
 
   return (
     <>
       <NavAdmin />
       <Container>
-        <h1 className="my-4 text-center">Doctores</h1>
+        <h1 className="my-4 text-center">Productos</h1>
         <Table striped bordered hover responsive>
           <thead>
             <tr>
+              <th>ID</th>
               <th>Nombre</th>
-              <th>Apellidos</th>
-              <th>Telefono</th>
-              <th>Fecha Nacimiento</th>
-              <th>Especialidad</th>
-              <th>No. Cedula profesional</th>
-              <th>Hospital practicas</th>
-              <th>Univiersidad egreso</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Stock</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {doctors.map((doctor) => (
-              <tr key={doctor.id_doctor}>
-                <td>{doctor.doc_nombre}</td>
-                <td>{doctor.doc_apellidos}</td>
-                <td>{doctor.doc_telefono}</td>
-                <td>{doctor.doc_fecha_nacimiento}</td>
-                <td>{doctor.doc_especialidad}</td>
-                <td>{doctor.doc_numero_licencia}</td>
-                <td>{doctor.doc_afiliacion_hospitalaria}</td>
-                <td>{doctor.doc_educacion}</td>
+            {products.map((product) => (
+              <tr key={product.id_producto}>
+                <td>{product.id_producto}</td>
+                <td>{product.pro_nombre}</td>
+                <td>{product.pro_descripcion}</td>
+                <td>{product.pro_precio}</td>
+                <td>{product.pro_stock}</td>
                 <td>
-                  <Button variant="warning" onClick={() => handleEdit(doctor)}>
+                  <Button variant="warning" onClick={() => handleEdit(product)}>
                     <FaEdit />
                   </Button>{" "}
-                  <Button variant="danger" onClick={() => handleDelete(doctor)}>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(product)}
+                  >
                     <FaTrashAlt />
                   </Button>{" "}
-                  <Button variant="info" onClick={() => generatePDF(doctor)}>
+                  <Button variant="info" onClick={() => generatePDF(product)}>
                     <FaFilePdf />
                   </Button>
                 </td>
@@ -360,13 +312,13 @@ export const DoctorsTableScreen = () => {
         </Table>
 
         <Button variant="primary" onClick={handleGenerateAllUsersPDF}>
-          Generar PDF de todos los usuarios
+          Generar PDF de todos los productos
         </Button>
 
         {/**Modal para editar datos de doctores */}
         <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>Editar Usuario</Modal.Title>
+            <Modal.Title>Editar Producto</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
@@ -374,113 +326,54 @@ export const DoctorsTableScreen = () => {
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   type="text"
-                  value={selectDoctor?.doc_nombre || ""}
+                  value={selectProduct?.pro_nombre || ""}
                   onChange={(e) =>
-                    setSelectedDoctor({
-                      ...selectDoctor,
-                      doc_nombre: e.target.value,
+                    setSelectProduct({
+                      ...selectProduct,
+                      pro_nombre: e.target.value,
                     })
                   }
                 />
               </Form.Group>
-
-              <FormGroup controlId="forSurname">
-                <FormLabel>Apellido</FormLabel>
+              <Form.Group controlId="formDescripcion">
+                <Form.Label>Descripción</Form.Label>
                 <Form.Control
                   type="text"
-                  value={selectDoctor?.doc_apellidos || ""}
+                  value={selectProduct?.pro_descripcion || ""}
                   onChange={(e) =>
-                    setSelectedDoctor({
-                      ...selectDoctor,
-                      doc_apellidos: e.target.value,
+                    setSelectProduct({
+                      ...selectProduct,
+                      pro_descripcion: e.target.value,
                     })
                   }
                 />
-              </FormGroup>
-
-              <FormGroup controlId="formPhone">
-                <FormLabel>Telefono</FormLabel>
+              </Form.Group>
+              <Form.Group controlId="formPrecio">
+                <Form.Label>Precio</Form.Label>
                 <Form.Control
                   type="text"
-                  value={selectDoctor?.doc_telefono || ""}
+                  value={selectProduct?.pro_precio || ""}
                   onChange={(e) =>
-                    setSelectedDoctor({
-                      ...selectDoctor,
-                      doc_telefono: e.target.value,
+                    setSelectProduct({
+                      ...selectProduct,
+                      pro_precio: e.target.value,
                     })
                   }
                 />
-              </FormGroup>
-
-              <FormGroup controlId="formBirthday">
-                <FormLabel>Fecha de nacimiento</FormLabel>
+              </Form.Group>
+              <Form.Group controlId="formStock">
+                <Form.Label>Stock</Form.Label>
                 <Form.Control
                   type="text"
-                  value={selectDoctor?.doc_fecha_nacimiento || ""}
+                  value={selectProduct?.pro_stock || ""}
                   onChange={(e) =>
-                    setSelectedDoctor({
-                      ...selectDoctor,
-                      doc_fecha_nacimiento: e.target.value,
+                    setSelectProduct({
+                      ...selectProduct,
+                      pro_stock: e.target.value,
                     })
                   }
                 />
-              </FormGroup>
-
-              <FormGroup controlId="formEspecial">
-                <FormLabel>Especialidad</FormLabel>
-                <Form.Control
-                  type="text"
-                  value={selectDoctor?.doc_especialidad || ""}
-                  onChange={(e) =>
-                    setSelectedDoctor({
-                      ...selectDoctor,
-                      doc_especialidad: e.target.value,
-                    })
-                  }
-                />
-              </FormGroup>
-
-              <FormGroup controlId="formLicnese">
-                <FormLabel>No.Licencia</FormLabel>
-                <Form.Control
-                  type="text"
-                  value={selectDoctor?.doc_numero_licencia || ""}
-                  onChange={(e) =>
-                    setSelectedDoctor({
-                      ...selectDoctor,
-                      doc_numero_licencia: e.target.value,
-                    })
-                  }
-                />
-              </FormGroup>
-
-              <FormGroup controlId="formHospital">
-                <FormLabel>Hospital de procedencia</FormLabel>
-                <Form.Control
-                  type="text"
-                  value={selectDoctor?.doc_afiliacion_hospitalaria || ""}
-                  onChange={(e) =>
-                    setSelectedDoctor({
-                      ...selectDoctor,
-                      doc_afiliacion_hospitalaria: e.target.value,
-                    })
-                  }
-                />
-              </FormGroup>
-
-              <FormGroup controlId="formEducation">
-                <FormLabel>Universidad de procedencia</FormLabel>
-                <Form.Control
-                  type="text"
-                  value={selectDoctor?.doc_educacion || ""}
-                  onChange={(e) =>
-                    setSelectedDoctor({
-                      ...selectDoctor,
-                      doc_educacion: e.target.value,
-                    })
-                  }
-                />
-              </FormGroup>
+              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>

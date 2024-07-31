@@ -14,6 +14,13 @@ import { GetUsers } from './JavaScript/Admin/Users/GetUsers.js';
 import { editUsers } from './JavaScript/Admin/Users/editUsers.js';
 import { deleteUsers } from './JavaScript/Admin/Users/deleteUsers.js';
 import { GetDoctors } from './JavaScript/Admin/Doctors/GetDoctors.js';
+import { editDoctors } from './JavaScript/Admin/Doctors/EditDoctors.js';
+import { deleteDoctor } from './JavaScript/Admin/Doctors/deleteDoctor.js';
+import { RegisterDoctor } from './JavaScript/Admin/Doctors/RegisterDoctor.js';
+import { GetProducts } from './JavaScript/Admin/Products/GetProducts.js';
+import { EditProduct } from './JavaScript/Admin/Products/EditProduct.js';
+import { DeleteProduct } from './JavaScript/Admin/Products/deleteProduct.js';
+import { RegisterProduct } from './JavaScript/Admin/Products/RegisterProduct.js';
 
 
 // Configuración de la conexión para Medirec
@@ -57,7 +64,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Configurar rutas
+
 getEstados(app, dbSepomex);
 getMunicipios(app, dbSepomex);
 getColonias(app, dbSepomex);
@@ -68,7 +75,13 @@ GetUsers(app, dbMedirec , dbSepomex);
 editUsers(app , dbMedirec);
 deleteUsers(app,dbMedirec);
 GetDoctors(app,dbMedirec);
-
+editDoctors(app,dbMedirec);
+deleteDoctor(app,dbMedirec);
+RegisterDoctor(app,dbMedirec);
+GetProducts(app,dbMedirec);
+EditProduct(app,dbMedirec);
+DeleteProduct(app,dbMedirec);
+RegisterProduct(app,dbMedirec);
 
 
 

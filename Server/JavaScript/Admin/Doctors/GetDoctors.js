@@ -5,7 +5,10 @@ export const GetDoctors = (app,dbMedirec) =>{
             if(err){
                 res.status(500).send(err);
             }else{
-                res.json(results);
+                const doctors = results
+                res.json({
+                    doctors: results
+                });
             }
         })
     })

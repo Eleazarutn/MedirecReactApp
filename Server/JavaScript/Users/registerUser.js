@@ -21,7 +21,7 @@ export const registerUser = (app, db) => {
       INSERT_USER_QUERY,
       [
         formFirstName,
-        formLastName, 
+        formLastName,
         formEdad,
         formTelefono,
         formEstado,

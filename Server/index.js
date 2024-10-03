@@ -21,13 +21,15 @@ import { GetProducts } from './JavaScript/Admin/Products/GetProducts.js';
 import { EditProduct } from './JavaScript/Admin/Products/EditProduct.js';
 import { DeleteProduct } from './JavaScript/Admin/Products/deleteProduct.js';
 import { RegisterProduct } from './JavaScript/Admin/Products/RegisterProduct.js';
-
+import { registerAppointment } from './JavaScript/Users/registerAppointment.js';
+import { GetCitas } from './JavaScript/Doctor/getCitas.js';
+import { DeleteCita } from './JavaScript/Doctor/DeleteCita.js';
 
 // Configuración de la conexión para Medirec
 const dbMedirecConfig = {
     host: 'localhost',
     user: 'root',
-    password: '', // Ajusta esto si tienes una contraseña
+    password: '', 
     database: 'medirecactreact',
 };
 
@@ -82,7 +84,9 @@ GetProducts(app,dbMedirec);
 EditProduct(app,dbMedirec);
 DeleteProduct(app,dbMedirec);
 RegisterProduct(app,dbMedirec);
-
+registerAppointment(app,dbMedirec);
+GetCitas(app,dbMedirec);
+DeleteCita(app,dbMedirec);
 
 
 app.listen(3001, () => {

@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
-import { Navbar, Nav, Container, Offcanvas, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+  Navbar,
+  Nav,
+  Container,
+  Offcanvas,
+  Button,
+  NavDropdown,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-export const NavPaciente = () => {
+
+export const NavDoctorScreen = () => {
+
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
@@ -13,17 +22,15 @@ export const NavPaciente = () => {
     navigate('/'); // Redirect to the login page or homepage
   };
 
+
   return (
     <>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="/homePaciente">Medirec</Navbar.Brand>
+          <Navbar.Brand href="/homeAdmin">Medirec</Navbar.Brand>
           <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
           <Navbar.Collapse id="offcanvasNavbar">
-            <Nav className="me-auto">
-              <Nav.Link href="/homePaciente">Home</Nav.Link>
-              <Nav.Link href="#profile">Profile</Nav.Link>
-            </Nav>
+            <Nav className="me-auto"></Nav>
             <Button variant="primary" onClick={handleShow}>
               Más opciones
             </Button>
@@ -40,11 +47,19 @@ export const NavPaciente = () => {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="flex-column">
-            <Nav.Link href="#home">Agendar una cita</Nav.Link>
-            <Nav.Link href="#profile">Historial de citas</Nav.Link>
-            <Nav.Link href="#action/3.1">Historial de recetas</Nav.Link>
-            <Nav.Link href="/farmaciaPaciente">Farmacia</Nav.Link>
-            <Nav.Link href='/generateAppointment'>Agendar cita medica</Nav.Link>
+            <NavDropdown title="Citas" id="offcanvasNavbarDropdownDoctors">
+              <NavDropdown.Item href="/tableCitasDoctor">
+                Citas asignadas
+              </NavDropdown.Item>
+            </NavDropdown>
+
+          
+            <NavDropdown title="Productos" id="offcanvasNavbarDropdownProducts">
+              <NavDropdown.Item href="">
+                Catalogo de productos
+              </NavDropdown.Item>
+            </NavDropdown>
+
           </Nav>
         </Offcanvas.Body>
       </Offcanvas>

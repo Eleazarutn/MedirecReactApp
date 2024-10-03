@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FullPaciente } from "../../Components/PacienteScreens/PacienteView/FullPaciente";
 
 import { PharmacyPaciente } from "../../Components/PacienteScreens/PharmacyPaciente";
+import { AppointmentScreen } from "../../Components/PacienteScreens/GenerateAppointmentScreen/AppointmentScreen";
 
 export const RoutesPaciente = () => {
   return (
@@ -13,6 +14,7 @@ export const RoutesPaciente = () => {
         <Routes>
           <Route path="/homePaciente" element={<FullPaciente/>} />
           <Route path="/farmaciaPaciente" element={<PharmacyPaciente/>} />
+          <Route path="/generateAppointment" element={<AppointmentScreen/>}/>
         </Routes>
       </BrowserRouter>
     </>
